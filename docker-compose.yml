@@ -1,0 +1,38 @@
+version: '2'
+
+services:
+    db:
+        image: mysql
+        ports:
+            - 33060:3306
+        volumes:
+            - "./data/db:/var/lib/mysql"
+        environment:
+            MYSQL_ROOT_PASSWORD: yOFbxCIsSK3b0P75
+    web:
+        image: nginx:latest
+        ports:
+            - "8080:80"
+        volumes:
+            - ./app:/app
+            - ./site.conf:/etc/nginx/conf.d/default.conf
+        networks:
+            - code-network
+    php:
+        image: php:fpm
+        links:
+            - db:mysqldb
+        volumes:
+            - ./app:/app
+        networks:
+            - code-network
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        ports:
+            - "8081:80"
+        links:
+            - db
+
+networks:
+    code-network:
+        driver: bridge 
