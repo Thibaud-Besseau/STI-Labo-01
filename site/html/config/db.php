@@ -5,18 +5,18 @@
        }
 
        protected function getUsersPassword($email) {
-        $sql = 'SELECT password  FROM   user  WHERE  email = :email';
+        $sql = 'SELECT Password  FROM   user  WHERE  Email = :email';
         $statement = $this->prepare($sql);
         $statement->bindValue(':email', $email);
         $result = $statement->execute();
         $row = $result->fetchArray();
-        $password = $row['password'];
+        $password = $row['Password'];
         $statement->close();
         return $password;
     }
 
        protected function userExists($email) {
-           $sql = 'SELECT COUNT(*) AS count FROM   user WHERE  email = :email';
+           $sql = 'SELECT COUNT(*) AS count FROM user WHERE  Email = :email';
            $statement = $this->prepare($sql);
            $statement->bindValue(':email', $email);
 
@@ -40,22 +40,34 @@
        }
 
        public function loginUser($email, $password) {
+           $connected=false;
            if ($this->userExists($email)) {
+
                $password_db = $this->getUsersPassword($email);
+
 
                if ($password === $password_db) {
                    $connected = true;
-               } else {
-                   $connected = false;
                }
-           } else {
-               $connected = false;
-           }
 
+
+           }
 
            return $connected;
        }
 
+
+       public function emailUser($email) {
+           $sql = 'SELECT *  FROM message LEFT JOIN user ON message.Recipient = user.Id   WHERE  user.Email = :email';
+           $statement = $this->prepare($sql);
+           $statement->bindValue(':email', $email);
+           $result = $statement->execute();
+           $row = $result->fetchArray();
+           $password = $row['Password'];
+           $statement->close();
+           return $password;
+           return $connected;
+       }
 
 
 
