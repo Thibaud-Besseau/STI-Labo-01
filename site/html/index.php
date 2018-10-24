@@ -2,7 +2,7 @@
 if (!isset($_COOKIE["login"])) {
     header('Location: login.html');
 } else {
-    $username = $_COOKIE["login"];
+    $email = $_COOKIE["login"];
 }
 
 
@@ -140,13 +140,18 @@ if (!isset($_COOKIE["login"])) {
                                 <tbody>
                                 <tr>
                                     <?php
+
+                                    $db = new MyDB();
+                                    $emailsUser = $db->emailUser($email);
+                                    print_r($emailsUser);
+                                    foreach ($emailsUser as $email){
                                         print('<td><input type="checkbox"></td>');
                                         print('<td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>');
                                         print('<td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>');
                                         print('<td class="mailbox-subject"><b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...</td>');
                                         print('<td class="mailbox-attachment"></td>');
                                         print('<td class="mailbox-date">5 mins ago</td>')
-
+                                    }
                                     ?>
 
                                 </tr>

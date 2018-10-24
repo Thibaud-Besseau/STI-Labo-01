@@ -63,10 +63,8 @@
            $statement->bindValue(':email', $email);
            $result = $statement->execute();
            $row = $result->fetchArray();
-           $password = $row['Password'];
            $statement->close();
-           return $password;
-           return $connected;
+           return $row;
        }
 
 
