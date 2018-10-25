@@ -1,205 +1,57 @@
 <?php
-if (!isset($_COOKIE["login"])) {
-    header('Location: login.html');
-} else {
-    $email = $_COOKIE["login"];
+if (isset($_COOKIE["login"])) {
+    header('Location: /src/mailbox.php');
 }
-
 
 ?>
 
-
-<!DOCTYPE html>
-<html class=''>
-<head>
-    <meta charset='UTF-8'>
-    <meta name="robots" content="noindex">
-    <link rel="shortcut icon" type="image/x-icon" href="https://production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico"/>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-
-    <link href='public/css/admin-lte.css' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" >
+<!------ Include the above in your HEAD tag ---------->
+<html>
+  <head>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link href="./public/css/login.css" rel="stylesheet" id="login-css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+	  <!------ Include the above in your HEAD tag ---------->
+  </head>
+<body id="LoginForm">
+<div class="container">
+<h1 class="form-heading">STI LABO 1</h1>
+<div class="login-form">
+<div class="main-div">
+    <div class="panel">
+   <h2>Telegram Login</h2>
+   <p>Please enter your email and password</p>
+   </div>
+    <form id="Login" action="src/login.php" method="POST">
 
-</head>
-<body>
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <h1>
-            Mailbox
-            <small>13 new messages</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Mailbox</li>
-        </ol>
-    </section>
+        <div class="form-group">
 
-    <!-- Main content -->
-    <section class="content">
-        <div class="row">
-            <div class="col-md-3">
-                <a href="compose.html" class="btn btn-primary btn-block margin-bottom">Compose</a>
 
-                <div class="box box-solid">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Folders</h3>
+            <input type="email" class="form-control" name="inputEmail" id="inputEmail" placeholder="Email Address" required>
 
-                        <div class="box-tools">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                        class="fa fa-minus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="box-body no-padding">
-                        <ul class="nav nav-pills nav-stacked">
-                            <li class="active"><a href="#"><i class="fa fa-inbox"></i> Inbox
-                                    <span class="label label-primary pull-right">12</span></a></li>
-                            <li><a href="#"><i class="fa fa-envelope-o"></i> Sent</a></li>
-                            <li><a href="#"><i class="fa fa-file-text-o"></i> Drafts</a></li>
-                            <li><a href="#"><i class="fa fa-filter"></i> Junk <span
-                                            class="label label-warning pull-right">65</span></a>
-                            </li>
-                            <li><a href="#"><i class="fa fa-trash-o"></i> Trash</a></li>
-                        </ul>
-                    </div>
-                    <!-- /.box-body -->
-                </div>
-                <!-- /. box -->
-                <div class="box box-solid">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Labels</h3>
-
-                        <div class="box-tools">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                        class="fa fa-minus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="box-body no-padding">
-                        <ul class="nav nav-pills nav-stacked">
-                            <li><a href="#"><i class="fa fa-circle-o text-red"></i> Important</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> Promotions</a></li>
-                            <li><a href="#"><i class="fa fa-circle-o text-light-blue"></i> Social</a></li>
-                        </ul>
-                    </div>
-                    <!-- /.box-body -->
-                </div>
-                <!-- /.box -->
-            </div>
-            <!-- /.col -->
-            <div class="col-md-9">
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Inbox</h3>
-
-                        <div class="box-tools pull-right">
-                            <div class="has-feedback">
-                                <input type="text" class="form-control input-sm" placeholder="Search Mail">
-                                <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                            </div>
-                        </div>
-                        <!-- /.box-tools -->
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body no-padding">
-                        <div class="mailbox-controls">
-                            <!-- Check all button -->
-                            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i
-                                        class="fa fa-square-o"></i>
-                            </button>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i>
-                                </button>
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-reply"></i>
-                                </button>
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-share"></i>
-                                </button>
-                            </div>
-                            <!-- /.btn-group -->
-                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
-                            <div class="pull-right">
-                                1-50/200
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-sm"><i
-                                                class="fa fa-chevron-left"></i></button>
-                                    <button type="button" class="btn btn-default btn-sm"><i
-                                                class="fa fa-chevron-right"></i></button>
-                                </div>
-                                <!-- /.btn-group -->
-                            </div>
-                            <!-- /.pull-right -->
-                        </div>
-                        <div class="table-responsive mailbox-messages">
-                            <table class="table table-hover table-striped">
-                                <tbody>
-                                <tr>
-                                    <?php
-
-                                    $db = new MyDB();
-                                    $emailsUser = $db->emailUser($email);
-                                    print_r($emailsUser);
-                                    foreach ($emailsUser as $email){
-                                        print('<td><input type="checkbox"></td>');
-                                        print('<td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>');
-                                        print('<td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>');
-                                        print('<td class="mailbox-subject"><b>AdminLTE 2.0 Issue</b> - Trying to find a solution to this problem...</td>');
-                                        print('<td class="mailbox-attachment"></td>');
-                                        print('<td class="mailbox-date">5 mins ago</td>')
-                                    }
-                                    ?>
-
-                                </tr>
-                                </tbody>
-                            </table>
-                            <!-- /.table -->
-                        </div>
-                        <!-- /.mail-box-messages -->
-                    </div>
-                    <!-- /.box-body -->
-                    <div class="box-footer no-padding">
-                        <div class="mailbox-controls">
-                            <!-- Check all button -->
-                            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i
-                                        class="fa fa-square-o"></i>
-                            </button>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i>
-                                </button>
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-reply"></i>
-                                </button>
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-share"></i>
-                                </button>
-                            </div>
-                            <!-- /.btn-group -->
-                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
-                            <div class="pull-right">
-                                1-50/200
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-sm"><i
-                                                class="fa fa-chevron-left"></i></button>
-                                    <button type="button" class="btn btn-default btn-sm"><i
-                                                class="fa fa-chevron-right"></i></button>
-                                </div>
-                                <!-- /.btn-group -->
-                            </div>
-                            <!-- /.pull-right -->
-                        </div>
-                    </div>
-                </div>
-                <!-- /. box -->
-            </div>
-            <!-- /.col -->
         </div>
-        <!-- /.row -->
-    </section>
-    <!-- /.content -->
+
+        <div class="form-group">
+
+            <input type="password" class="form-control" name="inputPassword" id="inputPassword" placeholder="Password" required>
+
+        </div>
+        <div class="forgot">
+        <a href="https://www.wikihow.com/Remember-a-Forgotten-Password">Forgot password?</a>
 </div>
-<!-- /.content-wrapper -->
+        <button type="submit" class="btn btn-primary">Login</button>
+
+    </form>
+    </div>
+	<p class="botto-text"> Designed with <i class="fas fa-heart"></i></p>
+<p class="botto-text"> <a href="https://cdn-images-1.medium.com/max/800/1*PdKeUpPIa9ApLb2hcvnPXw.png"> Documentation link </a></p>
+</div></div></div>
+
+
 </body>
 </html>

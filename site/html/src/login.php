@@ -16,12 +16,12 @@ require_once("../config/db.php");
            $cookie_name = "login";
            $cookie_value = $post_Email;
            setcookie($cookie_name, $cookie_value, time() + (3600 * 30), "/"); // 1 day expiration
-           header("location: ../index.php");
+           header("location: ../mailbox.php");
 
        }
        else
        {
-           header("location: ../login.html");
+           header("location: ../index.php");
 
        }
    }
