@@ -10,7 +10,82 @@ class MyDB extends SQLite3
 
     }
 
+    public function lock_unlock($id, $action)
+    {
+        $sql = 'Update user SET Enable= :action  WHERE  Id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $statement->bindValue(':action', $action);
+        $statement->execute();
+        $statement->close();
+    }
 
+
+    public function updateUser($id,$firstName,$lastName,$password,$adminAccount)
+    {
+        $sql = 'Update user SET First_Name= :first_name, Last_Name= :last_name, Password= :password, Role = :adminAccount  WHERE  Id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':first_name', $firstName);
+        $statement->bindValue(':last_name', $lastName);
+        $statement->bindValue(':id', $id);
+        $statement->bindValue(':password', $password);
+        $statement->bindValue(':adminAccount', $adminAccount);
+        $statement->execute();
+        $statement->close();
+
+    }
+
+
+    public function createUser($email,$firstName,$lastName,$password,$adminAccount)
+    {
+        $sql = 'INSERT INTO user (Email, First_Name , Last_Name , Password, Role, Enable) VALUES   (:email,:first_name,:last_name,:password,:adminAccount,1)';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':first_name', $firstName);
+        $statement->bindValue(':last_name', $lastName);
+        $statement->bindValue(':email', $email);
+        $statement->bindValue(':password', $password);
+        $statement->bindValue(':adminAccount', $adminAccount);
+        $statement->execute();
+        $statement->close();
+
+    }
+
+    public function changePassword($email, $password)
+    {
+        $sql = 'Update user SET Password= :password  WHERE  Email = :email';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':email', $email);
+        $statement->bindValue(':password', $password);
+        $statement->execute();
+        $statement->close();
+        return $password;
+
+    }
+
+    public function isAdmin($email)
+    {
+        $sql = 'SELECT Role  FROM   user  WHERE  Email = :email';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':email', $email);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $role = $row['Role'];
+        $statement->close();
+        return $role;
+
+    }
+
+    public function getUser($id)
+    {
+        $sql = 'SELECT *  FROM   user  WHERE  Id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $statement->close();
+        return $row;
+
+    }
 
 
     public function getUsersPassword($email)
@@ -111,6 +186,37 @@ class MyDB extends SQLite3
             $row[$i]['First_Name'] = $res['First_Name'];
             $row[$i]['Last_Name'] = $res['Last_Name'];
             $row[$i]['Email'] = $res['Email'];
+            $row[$i]['Role'] = $res['Role'];
+            $row[$i]['Enable'] = $res['Enable'];
+
+
+            $i++;
+
+        }
+        $statement->close();
+        return $row;
+    }
+
+
+    public function allUsers()
+    {
+
+        $sql = 'SELECT *  FROM user ORDER BY user.First_Name ASC';
+
+        $statement = $this->prepare($sql);
+        $result = $statement->execute();
+        $row = array();
+
+        $i = 0;
+        while ($res = $result->fetchArray(SQLITE3_ASSOC)) {
+            $row[$i]['Id'] = $res['Id'];
+            $row[$i]['First_Name'] = $res['First_Name'];
+            $row[$i]['Last_Name'] = $res['Last_Name'];
+            $row[$i]['Email'] = $res['Email'];
+            $row[$i]['Role'] = $res['Role'];
+            $row[$i]['Enable'] = $res['Enable'];
+
+
             $i++;
 
         }
@@ -142,11 +248,25 @@ class MyDB extends SQLite3
 
     public function deleteMessage($id_Message)
     {
-        echo($id_Message);
         try {
             $sql = "DELETE FROM message WHERE Id= :Id_Message";
             $statement = $this->prepare($sql);
             $statement->bindValue(':Id_Message', $id_Message);
+            $statement->execute();
+            $statement->close();
+        } catch (Exception $e) {
+            echo 'Exception -> ';
+            var_dump($e->getMessage());
+        }
+    }
+
+
+    public function deleteUser($idUser)
+    {
+        try {
+            $sql = "DELETE FROM user WHERE Id= :Id_User";
+            $statement = $this->prepare($sql);
+            $statement->bindValue(':Id_User', $idUser);
             $statement->execute();
             $statement->close();
         } catch (Exception $e) {

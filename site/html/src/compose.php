@@ -5,6 +5,7 @@ if (!isset($_COOKIE["login"])) {
     header('Location: ../index.php');
 } else {
     $email = $_COOKIE["login"];
+    $isAdmin = $db->isAdmin($_COOKIE["login"]);
 }
 
 $type=0;
@@ -66,6 +67,8 @@ $idSender=null;
                     <ul class="nav nav-pills nav-stacked">
                         <li><a href="mailbox.php"><i class="fa fa-inbox"></i> Inbox</a></li>
                         <li><a href="password.php"><i class="fa fa-lock"></i> Change Password</a></li>
+                        <?php if($isAdmin){echo('<li><a href="users.php"><i class="fa fa-lock"></i> Manage</a></li>');}?>
+
                         <li><a href="logout.php"><i class="fa fa-sign-out"></i>Logout</a></li>
 
 

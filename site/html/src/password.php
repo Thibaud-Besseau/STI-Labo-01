@@ -30,7 +30,7 @@ if(!empty($_POST))
     //Feel free to edit / change as required
 
     $db = new MyDB();
-    $errors= array();
+    $errors= null;
     $i=0;
 
 
@@ -38,19 +38,26 @@ if(!empty($_POST))
 
     if($actualPassword==$password)
     {
-        if($password_new==$password_confirm)
+        if($password_new==$password_confirm && trim($password_new)!="")
         {
             $db->changePassword($email,$password_new);
         }
+        elseif (trim($password_new) == "")
+        {
+            echo("joke");
+            $errors="Enter a real password";
+
+        }
         else
         {
-            
+            $errors="Enter the same password twice";
+
         }
 
     }
     else
     {
-        $errors[$i++]="Actual Password not correct";
+        $errors="Actual Password not correct";
     }
 }
 ?>
@@ -74,11 +81,11 @@ if(!empty($_POST))
                 {
                     ?>
                     <div id="errors">
-                        <?php errorBlock($errors); ?>
+                        <?php  echo($errors); ?>
                     </div>
                 <?php } else { ?>
                     <div id="success">
-                        <p><?php echo lang("ACCOUNT_DETAILS_UPDATED"); ?></p>
+                        <p><?php echo("ACCOUNT_DETAILS_UPDATED"); ?></p>
                     </div>
                 <?php } }?>
 
