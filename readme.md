@@ -2,8 +2,13 @@
 
 ## HOW TO START
 
-To launch this application, you must execute the following command:
-`docker-compose up` and after you can connect to `localhost:8080`.
+To launch this application, you must execute the following commands:
+`docker run -ti -v "$PWD/site":/usr/share/nginx/ -d -p 8080:80 --name sti_project --hostname sti arubinst/sti:project2018` 
 
-If you want access to PhpMyAdmin use the following address: `localhost:8081`
+`docker exec -u root sti_project service nginx start` 
+
+`docker exec -u root sti_project service php5-fpm start` 
+
+
+After that you can connect to `localhost:8080`.
 
