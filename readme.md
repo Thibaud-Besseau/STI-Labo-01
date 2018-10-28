@@ -12,3 +12,12 @@ To launch this application, you must execute the following commands:
 
 After that you can connect to `localhost:8080`.
 
+
+For the moment, there are two accounts:
+
+
+| Login                       |Password     | Role  |
+|-----------------------------|-------------|-------|
+| admin@sti.ch                | Admin       | Admin |
+| thibaud.besseau@heig-vd.ch  | test        | User  |
+
