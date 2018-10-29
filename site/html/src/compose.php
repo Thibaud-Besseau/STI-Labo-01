@@ -1,5 +1,6 @@
 <?php
 require_once("../config/db.php");
+$db = new MyDB();
 
 if (!isset($_COOKIE["login"])) {
     header('Location: ../index.php');
@@ -12,7 +13,6 @@ $type=0;
 
 if(isset($_GET['id']))
 {
-    $db = new MyDB();
     $emailsUser = $db->email($_GET["id"]);
 
     $type=$_GET['type'];
