@@ -24,9 +24,9 @@ if (!isset($_SESSION['email'])) {
 if(!empty($_POST))
 {
     $errors = array();
-    $password = $_POST["password"];
-    $password_new = $_POST["passwordc"];
-    $password_confirm = $_POST["passwordcheck"];
+    $password = filter_var($_POST['password'], FILTER_SANITIZE_STRING);
+    $password_new = filter_var($_POST['passwordc'], FILTER_SANITIZE_STRING);
+    $password_confirm = filter_var($_POST['passwordcheck'], FILTER_SANITIZE_STRING);
 
     //Perform some validation
     //Feel free to edit / change as required

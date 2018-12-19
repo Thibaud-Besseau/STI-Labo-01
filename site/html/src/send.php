@@ -13,10 +13,10 @@ session_start();
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     // username and password sent from form
-    $post_Sender = $_POST['Sender'];
-    $post_Recipient = $_POST['Recipient'];
-    $post_Subject = $_POST['Subject'];
-    $post_Message = $_POST['Message'];
+    $post_Sender = filter_var($_POST['Sender'], FILTER_SANITIZE_STRING);
+    $post_Recipient = filter_var($_POST['Recipient'], FILTER_SANITIZE_STRING);
+    $post_Subject = filter_var($_POST['Subject'], FILTER_SANITIZE_STRING);
+    $post_Message = filter_var($_POST['Message'], FILTER_SANITIZE_STRING);
 
 
 
