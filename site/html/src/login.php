@@ -7,8 +7,9 @@ session_start();
 
    if($_SERVER["REQUEST_METHOD"] == "POST") {
         // username and password sent from form
-      $post_Email = $_POST['inputEmail'];
-      $post_Password = $_POST['inputPassword'];
+
+      $post_Email = filter_var($_POST['inputEmail'], FILTER_SANITIZE_STRING);
+      $post_Password = filter_var($_POST['inputPassword'], FILTER_SANITIZE_STRING);
 
 
        //test if the user give the correct informations

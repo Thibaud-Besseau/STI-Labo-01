@@ -15,9 +15,9 @@ $type=0;
 
 if(isset($_GET['id']))
 {
-    $emailsUser = $db->email($_GET["id"]);
+    $emailsUser = $db->email(filter_var($_GET['id'], FILTER_SANITIZE_STRING));
 
-    $type=$_GET['type'];
+    $type=filter_var($_GET['type'], FILTER_SANITIZE_STRING);
 }
 
 $idSender=null;

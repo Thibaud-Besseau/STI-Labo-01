@@ -10,20 +10,24 @@ session_start();
 
     require_once("../config/db.php");
 
-    if(isset($_GET['id']) && isset($_SESSION['email']))
+
+
+if(isset($_GET['id']) && isset($_SESSION['email']))
     {
 
         //todo check if user's email
         $id_Message = $_GET['id'];
 
         $db = new MyDB();
-        $db->deleteMessage($id_Message);
+        echo ($db->deleteMessage($id_Message));
+
+
 
     }
 
 
 
 
-header("location: ../index.php");
+header("location: ./mailbox.php");
 
 ?>
