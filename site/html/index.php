@@ -1,5 +1,5 @@
 <?php
-if (isset($_COOKIE["login"])) {
+if (isset($_SESSION['email'])) {
     header('Location: /src/mailbox.php');
 }
 

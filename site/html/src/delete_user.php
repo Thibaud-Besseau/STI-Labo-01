@@ -1,17 +1,14 @@
 <?php
 require_once("../config/db.php");
+session_start();
 
-if (!isset($_COOKIE["login"])) {
+
+if (!isset($_SESSION['email'])) {
     header('Location: ../index.php');
 } else {
     $db = new MyDB();
-    $isAdmin = $db->isAdmin($_COOKIE["login"]);
 
-    if($isAdmin ==true)
-    {
-        $email = $_COOKIE["login"];
-    }
-    else
+    if($_SESSION['isAdmin'] =!true)
     {
         header('Location: ./mailbox.php');
 

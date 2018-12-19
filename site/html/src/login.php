@@ -1,5 +1,7 @@
 <?php
 require_once("../config/db.php");
+session_start();
+
 
     $db = new MyDB();
 
@@ -12,10 +14,22 @@ require_once("../config/db.php");
        //test if the user give the correct informations
        if ($db->loginUser($post_Email, $post_Password)===true)
        {
-           //create a cookie to authorize the user to access other pages
-           $cookie_name = "login";
-           $cookie_value = $post_Email;
-           setcookie($cookie_name, $cookie_value, time() + (3600 * 30), "/"); // 1 day expiration
+
+           $_SESSION = array();
+           $_SESSION['email'] = $post_Email;
+
+
+           if($db->isAdmin($post_Email))
+           {
+               $_SESSION['isAdmin'] = true;
+
+           }
+           else
+           {
+               $_SESSION['isAdmin'] = false;
+
+           }
+
            header("location: ./mailbox.php");
 
        }

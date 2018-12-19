@@ -1,6 +1,8 @@
 <?php
 
 require_once("../config/db.php");
+session_start();
+
 
 /**
  * Created by PhpStorm.

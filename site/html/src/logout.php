@@ -6,9 +6,15 @@
  * Time: 7:37 AM
  */  //create a cookie to authorize the user to access other pages
 
+
+
 if (isset($_COOKIE['login'])) {
-    unset($_COOKIE['login']);
-    setcookie('login', null, -1, '/');
+    session_start();
+    session_unset();
+    session_destroy();
+    session_write_close();
+    setcookie(session_name(),'',0,'/');
+    session_regenerate_id(true);
 
 }
 
