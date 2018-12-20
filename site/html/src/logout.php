@@ -8,7 +8,7 @@
 
 
 
-if (isset($_COOKIE['login'])) {
+if (isset($_SESSION["email"])) {
     session_start();
     session_unset();
     session_destroy();

@@ -14,7 +14,7 @@ if (!isset($_SESSION['email'])) {
 
 if(isset($_GET["id"]))
 {
-    $emailsUser = $db->email($_GET["id"]);
+    $emailsUser = $db->email(filter_var($_GET['id'], FILTER_SANITIZE_STRING));
 
 }
 

@@ -17,10 +17,12 @@ if (!isset($_SESSION['email'])) {
 
 $type=0;
 
-if(isset($_GET['user']))
+$user=filter_var($_GET['user'], FILTER_SANITIZE_STRING);
+
+if(isset($user))
 {
     $db = new MyDB();
-    $db->deleteUser($_GET['user']);
+    $db->deleteUser($user);
     header('Location: ./users.php');
 
 

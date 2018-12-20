@@ -18,9 +18,9 @@ if (!isset($_COOKIE["login"])) {
 }
 if (!empty($_GET)) {
 
-    $isAnUpdate = $_GET["isAnUpdate"];
+    $isAnUpdate = filter_var($_GET['isAnUpdate'], FILTER_SANITIZE_STRING);
     if ($isAnUpdate) {
-        $idUser = $_GET["user"];
+        $idUser = filter_var($_GET['user'], FILTER_SANITIZE_STRING);
 
     }
 
@@ -28,15 +28,15 @@ if (!empty($_GET)) {
 
 if (!empty($_POST)) {
     $errors = array();
-    $isAnUpdate = $_POST["isAnUpdate"];
+    $isAnUpdate = filter_var($_POST['isAnUpdate'], FILTER_SANITIZE_STRING);
 
-    $firstName = $_POST["First_Name"];
-    $lastName = $_POST["Last_Name"];
+    $firstName = filter_var($_POST['First_Name'], FILTER_SANITIZE_STRING);
+    $lastName = filter_var($_POST['Last_Name'], FILTER_SANITIZE_STRING);
     if(!$isAnUpdate) {
-        $email = $_POST["Email"];
+        $email = filter_var($_POST['Email'], FILTER_SANITIZE_STRING);
     }
-    $password = $_POST["Password"];
-    $idUser = $_POST["idUser"];
+    $password = filter_var($_POST['Password'], FILTER_SANITIZE_STRING);
+    $idUser = filter_var($_POST['idUser'], FILTER_SANITIZE_STRING);
 
 
     if (isset($_POST["isAdmin"])) {
