@@ -129,3 +129,8 @@ Tous les utilisateurs devraient respecter ces critères mais surtout l'administr
 
 
 ## Conclusion
+Comme nous l'avons expliqué tout au long de ce rapport, sécuriser un site web PHP demande de prendre en comptes beaucoup de scénarios d'attaque afin d'être sûr d'avoir mis en place toutes les sécurités nécessaires. Il serait donc intéressant que tous développeurs fassent cette même analyse lorsqu'ils conçoivent le design de son site et à chaque changement ou ajout de fonctionnalités car la sécurité n'est pas un produit sur lequel on investit plusieurs heures de travail au début d’un projet mais un processus qui doit se poursuivre sur toutes la vie d'un site web.
+
+Les technologies utilisées sont un autre point à prendre en compte lorsque l’on veut sécuriser une application (quelle soit web ou d’un autre type). Dans notre scénario, nous nous sommes acharnés à sécuriser une application sous PHP 5.6 mais cette version ne reçoit plus de correctif de sécurité depuis le début 2019. Il faut donc que chaque développeur s’il veut assurer la sécurité de son application gère le cycle de vie de son application (création maintenance régulière et décommissionnement). Dans notre cas, il faudrait migrer notre application sous une version long support de PHP7 si l’on voulait continuer à garantir la sécurité de notre application.
+
+Le dernier point intéressant quand on développe des applications Web serait d’utiliser des Framework comme (Laravel ou Symfony) car la plupart des Framework intègrent par défaut des mesures de sécurités que la plupart des développeurs oublient de mettre en place (token CSRF par ex.). 
