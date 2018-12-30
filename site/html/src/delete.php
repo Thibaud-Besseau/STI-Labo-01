@@ -24,9 +24,14 @@ if(isset($_GET['id']) && isset($_SESSION['email']))
 
         //todo check if user's email
         $id_Message = filter_var($_GET['id'], FILTER_SANITIZE_STRING);
+        $token = filter_var($_GET['token'], FILTER_SANITIZE_STRING);
+
 
         $db = new MyDB();
-        echo ($db->deleteMessage($id_Message));
+        if( $_SESSION ['token'] === $token) {
+
+            echo($db->deleteMessage($id_Message));
+        }
 
 
 

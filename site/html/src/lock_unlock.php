@@ -26,11 +26,17 @@ $type=0;
 
 $user=filter_var($_GET['user'], FILTER_SANITIZE_STRING);
 $action=filter_var($_GET['action'], FILTER_SANITIZE_STRING);
+$token = filter_var($_GET['token'], FILTER_SANITIZE_STRING);
+
 
 if(isset($_GET['user'])&& isset($_GET['action']))
 {
     $db = new MyDB();
-    $db->lock_unlock($user,$action);
+    if( $_SESSION ['token'] === $token) {
+
+        $db->lock_unlock($user, $action);
+    }
+
     header('Location: ./users.php');
 
 

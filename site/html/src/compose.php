@@ -133,6 +133,7 @@ $idSender=null;
                         </textarea>
                         </div>
                         <input type="hidden" name="Sender" id="Sender" value="<?php echo $idSender;?>"/>
+                        <input type="hidden" name="token" id="token" value="<?php echo $_SESSION["token"]; ?>" />
                     </div>
 
                     <!-- /.box-body -->

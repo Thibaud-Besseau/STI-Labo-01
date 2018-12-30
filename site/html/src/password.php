@@ -29,6 +29,8 @@ if (!isset($_SESSION['email'])) {
 //Forms posted
 if(!empty($_POST))
 {
+    $db = new MyDB();
+
     $errors = array();
     $password = filter_var($_POST['password'], FILTER_SANITIZE_STRING);
     $password_new = filter_var($_POST['passwordc'], FILTER_SANITIZE_STRING);
@@ -52,7 +54,6 @@ if(!empty($_POST))
     //Perform some validation
     //Feel free to edit / change as required
 
-    $db = new MyDB();
     $errors= null;
     $i=0;
 
@@ -61,9 +62,31 @@ if(!empty($_POST))
 
     if(password_verify($password,$actualHashPassword))
     {
-        if(strcmp($password_new,$password_confirm) && trim($password_new)!=="")
+        if(strcmp($password_new,$password_confirm)===0 && trim($password_new)!=="")
         {
-            $db->changePassword($email,$password_new);
+            $token = filter_var($_POST['token'], FILTER_SANITIZE_STRING);
+
+            if( $_SESSION ['token'] === $token) {
+
+                //check if the new password meet the requirement
+                if (preg_match("/[^(?=\S{12,})(?=\S*[\W])(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])$]/",$password_new))
+                {
+                    $db->changePassword($email, $password_new);
+
+                }
+                else
+                {
+                    $errors="Votre mot de passe n'a pas la compléxité requise. Veuillez en resaisir un autre qui respecte les règles suivantes: \n
+                        12 caractères <br>
+                        Au moins un caractère minuscule <br>
+                        Au moins un caractère majuscule <br>
+                        Au moins un chiffre <br>
+                        Au moins un caractère spécial";
+                }
+
+
+
+            }
         }
         elseif (trim($password_new) === "")
         {
@@ -131,6 +154,8 @@ if(!empty($_POST))
                 </p>
         </div>
 
+
+        <input type="hidden" name="token" id="token" value="<?php echo $_SESSION["token"]; ?>" />
 
         <div class="modal-footer">
             <input type="submit" class="btn btn-primary" name="new" id="newfeedform" value="Update" />

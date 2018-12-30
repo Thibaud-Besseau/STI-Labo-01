@@ -3,6 +3,7 @@ require_once("../config/db.php");
 require_once("../config/session.php");
 
 session_start();
+
 //check if session has expired
 $mySession = new MySession();
 $mySession->isLoginSessionExpired();
@@ -78,7 +79,7 @@ if (!isset($_SESSION['email'])) {
                       <li><a href="mailbox.php"><i class="fa fa-inbox"></i> Inbox</a></li>
                       <li><a href="password.php"><i class="fa fa-lock"></i> Change Password</a></li>
 
-                      <?php if($isAdmin){echo('<li><a href="users.php"><i class="fa fa-lock"></i> Manage</a></li>');}?>
+                      <?php if($isAdmin){echo('<li><a href="users.php"><i class="fa fa-lock"></i> Manage</a></li>');}else {echo($isAdmin);}?>
                       <li><a href="logout.php"><i class="fa fa-sign-out"></i>Logout</a></li>
 
 
@@ -144,19 +145,19 @@ if (!isset($_SESSION['email'])) {
                     echo('<td>');
 
 
-                    echo('<a href="./profile_user.php?user='.$user["Id"].'&isAnUpdate=1"> <button class="btn-flat circle greenButton "><span style="margin:auto" style="display:table" class="glyphicon glyphicon-edit"></span></button></a>');
+                    echo('<a href="./profile_user.php?user='.$user["Id"].'&isAnUpdate=1&token='.$_SESSION["token"].'"> <button class="btn-flat circle greenButton "><span style="margin:auto" style="display:table" class="glyphicon glyphicon-edit"></span></button></a>');
 
                     if($user["Enable"]!=0)
                     {
-                        echo('<a href="lock_unlock.php?action=0&user='.$user["Id"].'"><button class="btn-flat circle greyButton"> <span style="margin:auto" style="display:table" class="fa fa-lock"></span></button></a>');
+                        echo('<a href="lock_unlock.php?action=0&user='.$user["Id"].'&token='.$_SESSION["token"].'"><button class="btn-flat circle greyButton"> <span style="margin:auto" style="display:table" class="fa fa-lock"></span></button></a>');
                     }
                     else
                     {
-                        echo('<a href="lock_unlock.php?action=1&user='.$user["Id"].'"><button class="btn-flat circle greyButton"> <span style="margin:auto" style="display:table" class="fa fa-unlock"></span></button></a>');
+                        echo('<a href="lock_unlock.php?action=1&user='.$user["Id"].'&token='.$_SESSION["token"].'"><button class="btn-flat circle greyButton"> <span style="margin:auto" style="display:table" class="fa fa-unlock"></span></button></a>');
 
                     }
 
-                    echo('<a href="./delete_user.php?user='.$user["Id"].'"> <button class="btn-flat circle greenButton "><span style="margin:auto" style="display:table" class="glyphicon glyphicon-trash"></span></button></a>');
+                    echo('<a href="./delete_user.php?user='.$user["Id"].'&token='.$_SESSION["token"].'"> <button class="btn-flat circle greenButton "><span style="margin:auto" style="display:table" class="glyphicon glyphicon-trash"></span></button></a>');
 
                     echo('</td>');
 

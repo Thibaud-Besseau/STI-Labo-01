@@ -33,6 +33,9 @@ if (!empty($_GET)) {
 }
 
 if (!empty($_POST)) {
+
+    $db = new MyDB();
+
     $errors = array();
     $isAnUpdate = filter_var($_POST['isAnUpdate'], FILTER_SANITIZE_STRING);
 
@@ -70,7 +73,6 @@ if (!empty($_POST)) {
     }
 
 
-    $db = new MyDB();
     $errors = null;
     $i = 0;
 
@@ -79,13 +81,19 @@ if (!empty($_POST)) {
         if ($isAnUpdate) {
 
             $newPasswordHash= password_hash($password, PASSWORD_BCRYPT);
-            $db->updateUser($idUser, $firstName, $lastName, $newPasswordHash, $adminAccount);
+            if( $_SESSION ['token'] === $_POST ['token']) {
+
+                $db->updateUser($idUser, $firstName, $lastName, $newPasswordHash, $adminAccount);
+            }
 
         }
         else
         {
             $newPasswordHash= password_hash($password, PASSWORD_BCRYPT);
-            $db->createUser($email, $firstName, $lastName, $newPasswordHash, $adminAccount);
+            if( $_SESSION ['token'] === $_POST ['token']) {
+
+                $db->createUser($email, $firstName, $lastName, $newPasswordHash, $adminAccount);
+            }
 
         }
 
@@ -179,6 +187,8 @@ if ($isAnUpdate) {
             </div>
 
             <input type="hidden" name="isAnUpdate" id="isAnUpdate" value="<?php echo $isAnUpdate; ?>"/>
+            <input type="hidden" name="token" id="token" value="<?php echo $_SESSION["token"]; ?>" />
+
             <?php
 
             if ($isAnUpdate) {

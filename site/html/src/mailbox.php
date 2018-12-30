@@ -20,6 +20,7 @@ if (!isset($_SESSION["email"])) {
 }
 
 
+
 ?>
 
 
@@ -132,7 +133,7 @@ if (!isset($_SESSION["email"])) {
                                     print('<td class="mailbox-date">' . gmdate("Y-m-d\ H:i:s", $email["Date"]) . '</td>');
                                     print('<td>    <a href="compose.php?id='. $email["Id"].'&type=1"<button type="button" class="btn btn-default btn-sm"><i class="fa fa-reply"></i> </button></a>
                                                    <a href="compose.php?id='. $email["Id"].'&type=2"<button type="button" class="btn btn-default btn-sm"><i class="fa fa-share"></i> </button></a>
-                                                   <a href="delete.php?id='. $email["Id"] .'" <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button></a></td>');
+                                                   <a href="delete.php?id='. $email["Id"] .'&token='.$_SESSION["token"].'" <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button></a></td>');
                                     print("</tr>");
                                 }
                                 ?>

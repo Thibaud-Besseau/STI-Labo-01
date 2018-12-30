@@ -42,5 +42,21 @@ class mySession
             session_regenerate_id(true); // change session ID for the current session and invalidate old session ID
             $_SESSION['CREATED'] = time();
         }
+
+        $this->generateToken();
+    }
+
+    function generateToken()
+    {
+
+
+
+        //check if the token exist and if it was created less than 10 minutes before
+        if(!isset($_SESSION["creationDate"]) || ( time()- $_SESSION["creationDate"]) > 600) {
+
+            $_SESSION["token"] = bin2hex(mcrypt_create_iv(32, MCRYPT_DEV_URANDOM));
+
+            $_SESSION["creationDate"] = time();
+        }
     }
 }

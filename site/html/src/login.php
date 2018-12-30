@@ -1,7 +1,11 @@
 <?php
 require_once("../config/db.php");
+require_once("../config/session.php");
+
 
 session_start();
+$mySession = new MySession();
+
 
 
     $db = new MyDB();
@@ -29,8 +33,15 @@ session_start();
        if ($db->loginUser($post_Email, $post_Password)===true)
        {
 
+           echo ("hello");
+
            $_SESSION = array();
            $_SESSION['email'] = $post_Email;
+           echo ("hello2");
+
+           $mySession->generateToken();
+
+
 
 
            if($db->isAdmin($post_Email))

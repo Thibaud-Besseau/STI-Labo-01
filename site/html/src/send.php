@@ -53,12 +53,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         $post_Message= substr($post_Message,0,$db->getBodyLenght());
     }
 
-
-
-
 }
 
-
-
-$db->sendEmail($post_Sender, $post_Recipient, $post_Subject, $post_Message);
+//verify the user token
+if( $_SESSION ['token'] === $_POST ['token']) {
+    $db->sendEmail($post_Sender, $post_Recipient, $post_Subject, $post_Message);
+}
 header("location: ./mailbox.php");
