@@ -2,7 +2,7 @@
 require_once("../config/db.php");
 session_start();
 
-if (!isset($_COOKIE["login"])) {
+if (!isset($_SESSION["email"])) {
     header('Location: ../index.php');
 } else {
 
@@ -55,12 +55,14 @@ if (!empty($_POST)) {
 
         if ($isAnUpdate) {
 
-            $db->updateUser($idUser, $firstName, $lastName, $password, $adminAccount);
+            $newPasswordHash= password_hash($password, PASSWORD_BCRYPT);
+            $db->updateUser($idUser, $firstName, $lastName, $newPasswordHash, $adminAccount);
 
         }
         else
         {
-            $db->createUser($email, $firstName, $lastName, $password, $adminAccount);
+            $newPasswordHash= password_hash($password, PASSWORD_BCRYPT);
+            $db->createUser($email, $firstName, $lastName, $newPasswordHash, $adminAccount);
 
         }
 

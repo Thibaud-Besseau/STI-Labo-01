@@ -36,9 +36,9 @@ if(!empty($_POST))
     $i=0;
 
 
-    $actualPassword=$db->getUsersPassword($email);
+    $actualHashPassword=$db->getUsersPassword($email);
 
-    if($actualPassword==$password)
+    if(password_verify($password,$actualHashPassword))
     {
         if($password_new==$password_confirm && trim($password_new)!="")
         {
@@ -46,7 +46,6 @@ if(!empty($_POST))
         }
         elseif (trim($password_new) == "")
         {
-            echo("joke");
             $errors="Enter a real password";
 
         }

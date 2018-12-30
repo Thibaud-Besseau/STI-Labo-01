@@ -52,10 +52,13 @@ class MyDB extends SQLite3
 
     public function changePassword($email, $password)
     {
+
+        $newPasswordHash= password_hash($password, PASSWORD_BCRYPT);
+
         $sql = 'Update user SET Password= :password  WHERE  Email = :email';
         $statement = $this->prepare($sql);
         $statement->bindValue(':email', $email);
-        $statement->bindValue(':password', $password);
+        $statement->bindValue(':password', $newPasswordHash);
         $statement->execute();
         $statement->close();
         return $password;
@@ -127,10 +130,12 @@ class MyDB extends SQLite3
         $connected = false;
         if ($this->userExists($email)) {
 
-            $password_db = $this->getUsersPassword($email);
+
+            $passwordHashDb = $this->getUsersPassword($email);
 
 
-            if ($password === $password_db) {
+
+            if (password_verify($password,$passwordHashDb)) {
                 $connected = true;
             }
 

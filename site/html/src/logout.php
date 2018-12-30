@@ -7,9 +7,9 @@
  */  //create a cookie to authorize the user to access other pages
 
 
+session_start();
 
 if (isset($_SESSION["email"])) {
-    session_start();
     session_unset();
     session_destroy();
     session_write_close();
