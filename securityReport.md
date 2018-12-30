@@ -243,6 +243,36 @@ if( $_SESSION ['token'] === $_POST ['token']) { }
 
 Si le site est accessible via le protocole HTTP, il est indispensable de changer le token régulièrement car il suffit à un attaquant de capturer le trafic entre la victime et le serveur web pour avoir le token. C'est pour cela qu'il est recommendé d'utiliser le protocle HTTPS pour chiffrer le trafic entre l'utilisateur et le site web.
 
+## Point de situation
+Actuellement, nous avons contré les vulnérabilités suivantes:
+
+
+|  Vulnérabilités                  | Mesures de sécurités                                                                          |
+| :--------------------------------| :---------------------------------------------------------------------------------------------|
+| Controle d'accès                 | La gestion des accès via des cookies à été remplacé par des sessions PHP (plus sûr)           |
+| Controle des entrèes             | Les entrées sont protégés et leurs tailles vérifiés                                           |
+| XSS réfléchi et stocké           | Nous échappons les charactères spéciaux et aucun param GET n'est affiché                      |
+| Injection SQL                    | Nous utilisons des requêtes préparées pour se prémunir de ce problème                         |
+| Confidentialité des MDP          | Les mots de passes stockés dans la base de données sont hashés et salés                       |
+| Type juggling                    | Impossible car nous utilisons seulement des outils de comparaisons strictes                   |
+| Session                          | Afin d'éviter le brute force des session, celle-ci sont fermé après 30 min d'inactivité       |
+| Session usurpation d'ID          | Afin d'éviter l'usurpation, l'id de la session est regénéré régulièrement                     |
+| Attaque CSRF                     | Pour chaque action, il est necessaire de soumettre un token qui est mis à jour réguièrement   |
+
+
+A notre connaissance, il reste les failles suivantes
+
+|  Vulnérabilités                  | Mesures de sécurités à mettre en place                                                        |
+| :--------------------------------| :---------------------------------------------------------------------------------------------|
+| RBAC sur la bd                   | Sur la base de données, il n'y pas de gestion des droits granulaire car seul un compte root est utilisé. Il faudrait mettre en place des droits en fonction des roles de chaque utilisateur ou service          |
+| Brute Force du login             | Il est possible de brute forcer la page de login car il n'y a pas de captcha ou de banissement d'IP |
+| Version de PHP obsolète          | Depuis fin 2018, la version de PHP n'est plus en support EOL et donc elle ne reçoit plus de patch de sécurité                  |
+| Version du serveur               | Le serveur ubuntu hebergeant notre site est basé sur la version 14 dont le support étendue prendra fin à la mi avril. Après cette date, il n'y aura plus de patch de sécurité. Il faut donc plannifier une migration.                    |
+| Trafic non chiffré               | Afin de chiffrer notre trafic, il faudrait mettre en place un certificat SSL. Il est possible d'en générer [un gratuitement] (https://letsencrypt.org/). Nous avons mis en annexe un fichier docker compose qui se charge d'aller générer le certificat automatiquement  |
+
+
+
+Le fichier DockerCompose devrait servir de base à tous déploiements de site web. Il propose met en place un NGNIX Proxy qui centralise toutes les requêtes des clients. Ce proxy est celui qui possède le certificat SSL. Ce certificat est mis à jour par un autre container qui s'occupe de vérifier périodiquement si le certificat est à jour et si besoin il le met à jour. Les autres containeurs sont plutôt basiques : un serveur NGNIX qui délivre le contenu au proxy et un containeur PHP. Pour finir il y a un containeur MYSQL qui ne peut être accédé que par le containeur PHP pour des raisons de sécurités.
 
 ## Conclusion
 Comme nous l'avons expliqué tout au long de ce rapport, sécuriser un site web PHP demande de prendre en comptes beaucoup de scénarios d'attaque afin d'être sûr d'avoir mis en place toutes les sécurités nécessaires. Il serait donc intéressant que tous développeurs fassent cette même analyse lorsqu'ils conçoivent le design de son site et à chaque changement ou ajout de fonctionnalités car la sécurité n'est pas un produit sur lequel on investit plusieurs heures de travail au début d’un projet mais un processus qui doit se poursuivre sur toutes la vie d'un site web.
