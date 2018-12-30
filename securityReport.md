@@ -135,6 +135,9 @@ La fonction `password_hash()` étant une fonction mathématique à sens unique, 
 
 Les comparaisons (non strictes) en php sont connues pour pouvoir ammener à des résultats qui ne sont pas ceux attendus. (Voir le tableau ci-joint: 
 
+![alt text](/images/PHP_Type_Jungeling.jpg "Types Juggling (Source: https://www.owasp.org/images/6/6b/PHPMagicTricks-TypeJuggling.pdf)")
+
+
 Pour s'assurer d'avoir toujours le meme comportement lors des comparaisons, nous avons décidé de forcer les comparaisons strictes comme 
 
 `===` à la place de `==` ou `!==` à la place de `!=`. Pour les comparaisons de strings, nous avons choisis d'utiliser `strcmp()` ou `password_verify()` lorsqu'il s'agit de comparer des hashs de mots de passes
