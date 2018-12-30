@@ -126,6 +126,11 @@ Tous les utilisateurs devraient respecter ces critères mais surtout l'administr
 
 ## Contre-mesures
 
+### Proctection des mots de passes de la base de données
+Les mots de passes stockés dans notre base de données étant des informations extrêmement sensibles car la plupart des utilisateurs réutilisent la même combinaison d’email et de mot de passe sur plusieurs sites. Afin de garantir à nos utilisateurs, que même si notre base de données était dumpé par des attaquants, leurs identifiants utilisés sur d’autres sites seraient toujours sûrs, nous avons décidé de ne plus stocker leurs mots de passe en clair mais de simplement stocker le hash de leur mot de passe. 
+
+La fonction `hash()` étant une fonction mathématique à sens unique, il est normalement impossible à partir d’un hash d’obtenir le mot de passe d’origine sans brute forcer la fonction de hashage pour trouver une correspondance. De plus, afin de se prémunir contre le brute force de nos hashs de mots de passe, nous avons rajouté du sel. Le sel consiste à rajouter à la suite du mot de passe de chaque utilisateur, une chaine de caractères aléatoire. Ainsi, chaque hash généré est différent des autres même si les mots de passes entrés par les utilisateurs sont les mêmes. L’utilisation de sel oblige donc un attaquant à brute forcer chaque hash un par un. 
+
 
 
 ## Conclusion
