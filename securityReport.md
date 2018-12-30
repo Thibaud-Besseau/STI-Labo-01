@@ -154,7 +154,7 @@ Pour s'assurer d'avoir toujours le meme comportement lors des comparaisons, nous
 ### Expiration des sessions 
 Afin d'éviter des sessions qui sont valides encore des années après leurs créations et que de potentiels attaquant est le temps de brute forcer les identifiants de sessions, nous avons décidé de limiter la durée de validité des sessions à 30min. De plus, pour éviter les attaques de type [sessions fixation](https://www.owasp.org/index.php/Session_fixation), nous avons décidé de changer les identifiants de sessions à chaque changement de page via la fonction ci-dessous:
 
-```
+```php
 function isLoginSessionExpired() {
         //test if the last activity was more 30 minutes ago
         if(isset($_SESSION['LAST_Activity']) && (time() - $_SESSION['LAST_Activity'] > 1800))
