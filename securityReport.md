@@ -221,6 +221,8 @@ Ainsi si un attaquant effectue une attaque CSRF sur notre admin et essaye d'envo
 
 Nous regenerons les tokens toutes les 10 minutes pour des raisons de sécurité, nous changons les tokens des utilisateurs. Les tokens ne sont pas générés via la fonction `uniqid()` car cette fonction est prédictible car elle se base sur le temps. A la place de cette fonction, nous préférons créer notre token avec la fonction `mcrypt_create_iv()` qui crée un vecteur d'initialisation vraiement aléatoire. Une fois le token crée, nous le stokons dans une variable de session:
 
+Attention: La fonction `mcrypt_create_iv()` est dépréciée dans PHP 7 et doit être remplacée par la fonction `random_bytes()` qui existe depuis PHP 7.0
+
 ```php
 $_SESSION["token"] = bin2hex(mcrypt_create_iv(32, MCRYPT_DEV_URANDOM));
 ```
