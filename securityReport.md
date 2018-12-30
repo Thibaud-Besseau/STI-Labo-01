@@ -126,6 +126,12 @@ Tous les utilisateurs devraient respecter ces critères mais surtout l'administr
 
 ## Contre-mesures
 
+### Buffers overflow
+Normalement, les problèmes de type buffer over flow ne sont pas causé directement par les langages interprétés comme PHP mais vu que le moteur PHP est écrit en C, il est quand même possible d’exploiter des failles de types buffer overflow dans le moteur PHP. Les buffers over flow en PHP peuvent permettre d’exécuter du code de manière arbitraire. Vu que cela se passe dans le code C du moteur PHP, il est très dur de déceler si notre code peut permettre exploiter des vulnérabilités de ce type. Mais comme dit le dicton : il vaut mieux prévenir que guérir nous avons vérifié que toutes nos entrés soit plus petites ou égales à la taille de leurs champs dans la base de données via la fonction `strlen()`. 
+Une autre solution pour contrer les buffers overflow serait d’utiliser des librairies comme `Suhosin` qui change la manière dont la mémoire est allouée ce qui permet de diminuer très fortement les attaques de types buffers overflow
+Source : ` https://www.phpclasses.org/blog/post/338-6-Common-PHP-Security-Issues-And-Their-Remedies.html`
+
+
 ### Proctection des mots de passes de la base de données
 Les mots de passes stockés dans notre base de données étant des informations extrêmement sensibles car la plupart des utilisateurs réutilisent la même combinaison d’email et de mot de passe sur plusieurs sites. Afin de garantir à nos utilisateurs, que même si notre base de données était dumpé par des attaquants, leurs identifiants utilisés sur d’autres sites seraient toujours sûrs, nous avons décidé de ne plus stocker leurs mots de passe en clair mais de simplement stocker le hash de leur mot de passe. 
 
