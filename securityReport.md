@@ -18,7 +18,7 @@ La première partie du projet consistait à réaliser une application web foncti
 
 Afin de réaliser notre application web, nous devions respecter certains points notamment l'utilisation de PHP version 5.3 ainsi que SQLite. Ces contraintes ont pour but de montrer certaines failles de sécurités dans ces versions et donc de les corriger par nos soins. Aucune autre technologie n'est autorisée.
 
-###Partie WEB
+### Partie WEB
 
 Notre site web se trouve dans le répertoire "html" qui contient la page index et plusieurs répertoires dont :
 
@@ -43,20 +43,99 @@ Notre site web se trouve dans le répertoire "html" qui contient la page index e
 | send.php         | Fichier permettant l'envoi du message de l'utilisateur       |
 | users.php        | Page affichant la liste des utilisateurs pour l'administrateur |
 
-###Partie Base de données
+### Partie Base de données
 
 
+
+### Périmètre de sécurisation
+
+Notre périmètre de sécurisation est donné par le cahier des charges. Elle se limite donc uniquement à l'application web, ce qui comprend donc les différents fichiers et fonctionnalités déployés via Apache ou SQLite.
+
+La sécurité concernant le réseau qui entoure l'application ainsi que la sécurisation des machines physiques et la sécurisation des langages/librairies ne sont pas pris en compte ici.
 
 ## Sources de menaces
 
+Nous avons regroupé les sources de menaces en plusieurs catégories :
 
+- Utilisateurs malins
+  - Probabilité : Haute 
+  - Motivation : Avoir plus de privilèges, lire les messages des autres
+  - Cible : Les crédentials des utilisateurs et des administrateurs
+- Éventuels concurrents
+  - Probabilité : Moyenne
+  - Motivation : Rendre l'application inutilisable, copier la structure du site web
+  - Cible : Le fonctionnement de l'application
+- Hacker, script-kiddies
+  - Probabilité : Moyenne
+  - Motivation : Gain de reconnaissance, amusement
+  - Cible : L'entierté de l'application web
+- Cybercriminels
+  - Probabilité : Faible
+  - Motivation : Récupérer des mots de passe, des emails et utiliser le site web comme redirecteur vers des autres sites malveillants
+  - Cible : Données de l'utilisateur
+- Organisation étatique
+  - Probabilité : Très faible
+  - Motivation : Récolter des données pour de l'analyse/espionnage
+  - Cible : L'entierté de l'application web
 
 ## Scénarios d'attaques
 
+Le but de ce point est de définir plusieurs scénarios d'attaques qui pourraient mettre à mal notre application web.
 
+Chaque scénario comportera une description, un niveau d'importance, une source, une motivation, une cible et un contrôle (contre-mesure).
+
+### Vol de données sensibles 
+
+| Titre               | Description                                                  |
+| ------------------- | ------------------------------------------------------------ |
+| Scénario            | Un utilisateur curieux aimerait lire les messages entre deux collègues car ils ne s'entendent pas bien |
+| Impact              | Haut                                                         |
+| Source de la menace | Script Kiddies, Hackers, utilisateurs malins                 |
+| Motivation          | Gloire (script kiddies, hacker), argent (cybercriminels), fierté (utilisateurs malins) |
+| Cible               | Données utilisateurs (mots de passe, rôles, messages)        |
+| Contrôles           | Cacher le contenu de la base de données en vérifiant les entrées des utilisateurs |
+
+#### 1. Injection SQL 
+
+L'injection SQL est une attaque classique et très basique. Il est l'attaque la plus utilisée selon le site de l'OWASP. 
+
+Notre site web est touché par ce genre d'attaque à cause des différences champs textes que l'utilisateur peut remplir.
+
+#### 2. Mots de passe en clair dans la base de données
+
+L'autre point sensible dans les bases de données est le stockage des mots de passe. Si un attaquant trouve un accès à la base de donnée par mégarde alors il aura accès au mot de passe en clair. 
+
+Il est fortement recommandé de chiffrer les mots de passe et les enregitrer chiffrés. Cela permettra de cacher les mots de passe même si la base de données est compromise.
+
+### Contournement d'authentification
+
+| Titre               | Description                                                  |
+| ------------------- | ------------------------------------------------------------ |
+| Scénario            | Un utilisateur arrogant veut montrer à tous ses collègues de quoi il est capable. Pour prouver que c'est lui le meilleur en informatique, il va se connecter en tant qu'administrateur sans connaître le bon mot de passe |
+| Impact              | Haut                                                         |
+| Source de la menace | Script Kiddies, Hackers, utilisateurs malins                 |
+| Motivation          | Gloire (script kiddies, hacker), argent (cybercriminels), fierté (utilisateurs malins) |
+| Cible               | Données utilisateurs (mots de passe, rôles, messages)        |
+| Contrôles           | Cacher le contenu de la base de données en vérifiant les entrées des utilisateurs |
+
+#### 1. Mot de passe faible
+
+Le mot de passe doit toujours répondre à un certain critère comme sa complexité sur le nombre de caractères, l'utilisation de majuscule, caractères spéciaux ou chiffres.
+
+Tous les utilisateurs devraient respecter ces critères mais surtout l'administrateur car il est le point sensible de toute l'application. L'administrateur peut tout faire sur le site web, le perdre serait catastrophique.
 
 ## Contre-mesures
+
+### Proctection des mots de passes de la base de données
+Les mots de passes stockés dans notre base de données étant des informations extrêmement sensibles car la plupart des utilisateurs réutilisent la même combinaison d’email et de mot de passe sur plusieurs sites. Afin de garantir à nos utilisateurs, que même si notre base de données était dumpé par des attaquants, leurs identifiants utilisés sur d’autres sites seraient toujours sûrs, nous avons décidé de ne plus stocker leurs mots de passe en clair mais de simplement stocker le hash de leur mot de passe. 
+
+La fonction `password_hash()` étant une fonction mathématique à sens unique, il est normalement impossible à partir d’un hash d’obtenir le mot de passe d’origine sans brute forcer la fonction de hashage pour trouver une correspondance. De plus, afin de se prémunir contre le brute force de nos hashs de mots de passe, nous avons rajouté du sel. Le sel consiste à rajouter à la suite du mot de passe de chaque utilisateur, une chaine de caractères aléatoire. Ainsi, chaque hash généré est différent des autres même si les mots de passes entrés par les utilisateurs sont les mêmes. L’utilisation de sel oblige donc un attaquant à brute forcer chaque hash un par un. Lors de l'utilisation de la fonction `password_hash()` un sel unique est généré défaut pour chaque mot de passe. Pour verifier les mots de passe saisis, il suffit de donner le mot de passe en clair et le hash à la fonction `password_verify` et celle-ci s'occupe d'appliquer le meme sel et de hasher le mot de passe de l'utilisateur pour le comparer au hash stocker dans la base de données.
 
 
 
 ## Conclusion
+Comme nous l'avons expliqué tout au long de ce rapport, sécuriser un site web PHP demande de prendre en comptes beaucoup de scénarios d'attaque afin d'être sûr d'avoir mis en place toutes les sécurités nécessaires. Il serait donc intéressant que tous développeurs fassent cette même analyse lorsqu'ils conçoivent le design de son site et à chaque changement ou ajout de fonctionnalités car la sécurité n'est pas un produit sur lequel on investit plusieurs heures de travail au début d’un projet mais un processus qui doit se poursuivre sur toutes la vie d'un site web.
+
+Les technologies utilisées sont un autre point à prendre en compte lorsque l’on veut sécuriser une application (quelle soit web ou d’un autre type). Dans notre scénario, nous nous sommes acharnés à sécuriser une application sous PHP 5.6 mais cette version ne reçoit plus de correctif de sécurité depuis le début 2019. Il faut donc que chaque développeur s’il veut assurer la sécurité de son application gère le cycle de vie de son application (création maintenance régulière et décommissionnement). Dans notre cas, il faudrait migrer notre application sous une version long support de PHP7 si l’on voulait continuer à garantir la sécurité de notre application.
+
+Le dernier point intéressant quand on développe des applications Web serait d’utiliser des Framework comme (Laravel ou Symfony) car la plupart des Framework intègrent par défaut des mesures de sécurités que la plupart des développeurs oublient de mettre en place (token CSRF par ex.). 
