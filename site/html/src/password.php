@@ -28,6 +28,21 @@ if(!empty($_POST))
     $password_new = filter_var($_POST['passwordc'], FILTER_SANITIZE_STRING);
     $password_confirm = filter_var($_POST['passwordcheck'], FILTER_SANITIZE_STRING);
 
+    if(strlen($password)<= $db->getPasswordLenght())
+    {
+        $password= substr($password,0,$db->getPasswordLenght());
+    }
+
+    if(strlen($password_new)<= $db->getPasswordLenght())
+    {
+        $password_new= substr($password_new,0,$db->getPasswordLenght());
+    }
+
+    if(strlen($password_confirm)<= $db->getPasswordLenght())
+    {
+        $password_confirm= substr($password_confirm,0,$db->getPasswordLenght());
+    }
+
     //Perform some validation
     //Feel free to edit / change as required
 

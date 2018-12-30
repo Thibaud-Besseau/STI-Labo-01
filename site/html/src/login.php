@@ -12,6 +12,18 @@ session_start();
       $post_Password = filter_var($_POST['inputPassword'], FILTER_SANITIZE_STRING);
 
 
+      //verify entries lenght
+       if(strlen($post_Email)<= $db->getEmailLenght())
+       {
+           $post_Email= substr($post_Email,0,$db->getEmailLenght());
+       }
+
+      if(strlen($post_Password)<= $db->getPasswordLenght())
+      {
+          $post_Password= substr($post_Password,0,$db->getEmailLenght());
+      }
+
+
        //test if the user give the correct informations
        if ($db->loginUser($post_Email, $post_Password)===true)
        {

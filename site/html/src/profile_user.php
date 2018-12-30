@@ -39,6 +39,23 @@ if (!empty($_POST)) {
     $idUser = filter_var($_POST['idUser'], FILTER_SANITIZE_STRING);
 
 
+    if(strlen($firstName)<= $db->getFirstNameLenght())
+    {
+        $firstName= substr($firstName,0,$db->getFirstNameLenght());
+    }
+    if(strlen($lastName)<= $db->getLastNameLenght())
+    {
+        $lastName= substr($lastName,0,$db->getLastNameLenght());
+    }
+    if(strlen($password)<= $db->getPasswordLenght())
+    {
+        $password= substr($password,0,$db->getPasswordLenght());
+    }
+
+
+
+
+
     if (isset($_POST["isAdmin"])) {
 
         $adminAccount = 1;

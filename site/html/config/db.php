@@ -3,6 +3,64 @@
 class MyDB extends SQLite3
 {
     private $file_db;
+    private static $passwordLenght=25;
+    private static $emailLenght=25;
+    private static $firstNameLenght=25;
+    private static $lastNameLenght=25;
+    private static $subjectLenght=2147483647;
+    private static $bodyLenght=2147483647;
+
+    /**
+     * @return int
+     */
+    public static function getPasswordLenght()
+    {
+        return self::$passwordLenght;
+    }
+
+    /**
+     * @return int
+     */
+    public static function getEmailLenght()
+    {
+        return self::$emailLenght;
+    }
+
+    /**
+     * @return int
+     */
+    public static function getFirstNameLenght()
+    {
+        return self::$firstNameLenght;
+    }
+
+    /**
+     * @return int
+     */
+    public static function getLastNameLenght()
+    {
+        return self::$lastNameLenght;
+    }
+
+    /**
+     * @return int
+     */
+    public static function getSubjectLenght()
+    {
+        return self::$subjectLenght;
+    }
+
+    /**
+     * @return int
+     */
+    public static function getBodyLenght()
+    {
+        return self::$bodyLenght;
+    }
+
+
+
+
     function __construct()
     {
         $this->open('/usr/share/nginx/databases/sti-db.db',SQLITE3_OPEN_READWRITE);
