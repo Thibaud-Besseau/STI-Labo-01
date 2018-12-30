@@ -163,13 +163,13 @@ else
 ```
 
 Ci dessous se trouve l'explication de notre regex:
-`^` définit le début du mot de passe
-`(?=\S{12,})` définit que la taille du mot de passe doit être de 12 caractères au minimum
-`(?=\S*[\W])` définit que le mot de passe doit comporter au moins un caractère spécial
-`(?=\S*[a-z])` définit le mot de passe doit comporter au moins un caractère en minuscule
-`(?=\S*[A-Z])` définit le mot de passe doit comporter au moins un caractère en majuscule
-`(?=\S*[\d])` définit le mot de passe doit comporter au moins un chiffre
-`$` définit la fin du mot de passe
+- `^` définit le début du mot de passe
+- `(?=\S{12,})` définit que la taille du mot de passe doit être de 12 caractères au minimum
+- `(?=\S*[\W])` définit que le mot de passe doit comporter au moins un caractère spécial
+- `(?=\S*[a-z])` définit le mot de passe doit comporter au moins un caractère en minuscule
+- `(?=\S*[A-Z])` définit le mot de passe doit comporter au moins un caractère en majuscule
+- `(?=\S*[\d])` définit le mot de passe doit comporter au moins un chiffre
+- `$` définit la fin du mot de passe
 
 ### Protection des entrées
 Une des attaques les plus communes sur les sites web est le cross site Scripting. Avec cette attaque, un attaquant peut par l’intermédiaire d’un site web faire exécuter du code (javascript par exemple) à certains clients. Il pourrait demander à un utilisateur de saisir ses identifiants et envoyer ces infos sur un site externe lui appartenant. Afin de ce protéger de ça nous avons échapper tous les caractères spéciaux comme ` »`. Ainsi, un utilisateur ciblé par une attaque de type XSS verra simplement l’exploit sous forme de texte au lieu que celui-ci soit exécuté. Pour protéger les entrées des utilisateurs, nous avons utilisé la fonction `filter_var()` de PHP avec l’option `FILTER_SANITIZE_STRING`.
