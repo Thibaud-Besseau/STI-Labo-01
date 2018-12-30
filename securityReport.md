@@ -137,6 +137,9 @@ Les mots de passes stockés dans notre base de données étant des informations 
 
 La fonction `password_hash()` étant une fonction mathématique à sens unique, il est normalement impossible à partir d’un hash d’obtenir le mot de passe d’origine sans brute forcer la fonction de hashage pour trouver une correspondance. De plus, afin de se prémunir contre le brute force de nos hashs de mots de passe, nous avons rajouté du sel. Le sel consiste à rajouter à la suite du mot de passe de chaque utilisateur, une chaine de caractères aléatoire. Ainsi, chaque hash généré est différent des autres même si les mots de passes entrés par les utilisateurs sont les mêmes. L’utilisation de sel oblige donc un attaquant à brute forcer chaque hash un par un. Lors de l'utilisation de la fonction `password_hash()` un sel unique est généré défaut pour chaque mot de passe. Pour verifier les mots de passe saisis, il suffit de donner le mot de passe en clair et le hash à la fonction `password_verify` et celle-ci s'occupe d'appliquer le meme sel et de hasher le mot de passe de l'utilisateur pour le comparer au hash stocker dans la base de données.
 
+### Protection des entrées
+Une des attaques les plus communes sur les sites web est le cross site Scripting. Avec cette attaque, un attaquant peut par l’intermédiaire d’un site web faire exécuter du code (javascript par exemple) à certains clients. Il pourrait demander à un utilisateur de saisir ses identifiants et envoyer ces infos sur un site externe lui appartenant. Afin de ce protéger de ça nous avons échapper tous les caractères spéciaux comme ` »`. Ainsi, un utilisateur ciblé par une attaque de type XSS verra simplement l’exploit sous forme de texte au lieu que celui-ci soit exécuté. Pour protéger les entrées des utilisateurs, nous avons utilisé la fonction `filter_var()` de PHP avec l’option `FILTER_SANITIZE_STRING`.
+
 ### Types Juggling
 
 Les comparaisons (non strictes) en php sont connues pour pouvoir ammener à des résultats qui ne sont pas ceux attendus. (Voir le tableau ci-joint: 
@@ -147,6 +150,36 @@ Les comparaisons (non strictes) en php sont connues pour pouvoir ammener à des 
 Pour s'assurer d'avoir toujours le meme comportement lors des comparaisons, nous avons décidé de forcer les comparaisons strictes comme 
 
 `===` à la place de `==` ou `!==` à la place de `!=`. Pour les comparaisons de strings, nous avons choisis d'utiliser `strcmp()` ou `password_verify()` lorsqu'il s'agit de comparer des hashs de mots de passes
+
+### Expiration des sessions 
+Afin d'éviter des sessions qui sont valides encore des années après leurs créations et que de potentiels attaquant est le temps de brute forcer les identifiants de sessions, nous avons décidé de limiter la durée de validité des sessions à 30min. De plus, pour éviter les attaques de type [sessions fixation](https://www.owasp.org/index.php/Session_fixation), nous avons décidé de changer les identifiants de sessions à chaque changement de page via la fonction ci-dessous:
+
+```php
+function isLoginSessionExpired() {
+        //test if the last activity was more 30 minutes ago
+        if(isset($_SESSION['LAST_Activity']) && (time() - $_SESSION['LAST_Activity'] > 1800))
+        {
+            session_unset();
+            session_destroy();
+            session_write_close();
+            setcookie(session_name(),'',0,'/');
+            session_regenerate_id(true);
+        }
+        else
+        {
+            //update the session last activity
+            $_SESSION['LAST_Activity']=time();
+        }
+
+        //regenerate the session id all the 30 minutes
+        if(time() - $_SESSION['CREATED']>1800)
+        {
+            // session started more than 30 minutes ago
+            session_regenerate_id(true); // change session ID for the current session and invalidate old session ID
+            $_SESSION['CREATED'] = time();
+        }
+}
+```
 
 
 
