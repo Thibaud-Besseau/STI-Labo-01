@@ -40,11 +40,11 @@ if(!empty($_POST))
 
     if(password_verify($password,$actualHashPassword))
     {
-        if($password_new==$password_confirm && trim($password_new)!="")
+        if(strcmp($password_new,$password_confirm) && trim($password_new)!=="")
         {
             $db->changePassword($email,$password_new);
         }
-        elseif (trim($password_new) == "")
+        elseif (trim($password_new) === "")
         {
             $errors="Enter a real password";
 

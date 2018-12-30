@@ -97,14 +97,14 @@ $idSender=null;
                                 $users = $db->users();
                                 foreach ($users as $user) {
 
-                                    if($user["Email"]==$email)
+                                    if($user["Email"]===$email)
                                     {
                                         $idSender=$user["Id"];
 
                                     }
 
 
-                                    if($type==1 && $user["Id"] == $emailsUser["Sender"])
+                                    if($type===1 && $user["Id"] === $emailsUser["Sender"])
                                     {
                                         echo('<option selected="true" value="'.$user["Id"].'">'.$user["First_Name"]." ". $user["Last_Name"]. " ( ".$user["Email"]." )".'</option>');
 

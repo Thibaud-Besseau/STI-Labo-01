@@ -10,7 +10,7 @@ if (!isset($_SESSION['email'])) {
     $db = new MyDB();
     $isAdmin =$_SESSION['isAdmin'];
 
-    if($isAdmin ==true)
+    if($isAdmin ===true)
     {
         $email = $_SESSION['email'];
     }
@@ -112,7 +112,7 @@ if (!isset($_SESSION['email'])) {
                     echo('<td>'.$user["First_Name"]." ".$user["Last_Name"].'</td>');
                     echo('<td>'.$user["Email"].'</td>');
                     echo('<td>');
-                    if ($user["Role"]==0)
+                    if ($user["Role"]===0)
                     {
                         echo("User");
                     }
@@ -123,7 +123,7 @@ if (!isset($_SESSION['email'])) {
                     echo('</td>');
 
                     echo('<td>');
-                    if ($user["Enable"]!=0)
+                    if ($user["Enable"]!==0)
                     {
                         echo("Enable");
                     }

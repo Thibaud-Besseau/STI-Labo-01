@@ -5,7 +5,7 @@ session_start();
 
     $db = new MyDB();
 
-   if($_SERVER["REQUEST_METHOD"] == "POST") {
+   if($_SERVER["REQUEST_METHOD"] === "POST") {
         // username and password sent from form
 
       $post_Email = filter_var($_POST['inputEmail'], FILTER_SANITIZE_STRING);

@@ -9,7 +9,7 @@ if (!isset($_SESSION["email"])) {
     $db = new MyDB();
     $isAdmin = $_SESSION['isAdmin'];
 
-    if ($isAdmin == true) {
+    if ($isAdmin === true) {
         $email = $_SESSION['email'];
     } else {
         header('Location: ./mailbox.php');
@@ -51,7 +51,7 @@ if (!empty($_POST)) {
     $errors = null;
     $i = 0;
 
-    if (trim($firstName) != "" && trim($lastName) != "" && trim($password) != "") {
+    if (trim($firstName) !== "" && trim($lastName) !== "" && trim($password) !=="") {
 
         if ($isAnUpdate) {
 
