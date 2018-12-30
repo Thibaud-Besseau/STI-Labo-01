@@ -137,6 +137,40 @@ Les mots de passes stockés dans notre base de données étant des informations 
 
 La fonction `password_hash()` étant une fonction mathématique à sens unique, il est normalement impossible à partir d’un hash d’obtenir le mot de passe d’origine sans brute forcer la fonction de hashage pour trouver une correspondance. De plus, afin de se prémunir contre le brute force de nos hashs de mots de passe, nous avons rajouté du sel. Le sel consiste à rajouter à la suite du mot de passe de chaque utilisateur, une chaine de caractères aléatoire. Ainsi, chaque hash généré est différent des autres même si les mots de passes entrés par les utilisateurs sont les mêmes. L’utilisation de sel oblige donc un attaquant à brute forcer chaque hash un par un. Lors de l'utilisation de la fonction `password_hash()` un sel unique est généré défaut pour chaque mot de passe. Pour verifier les mots de passe saisis, il suffit de donner le mot de passe en clair et le hash à la fonction `password_verify` et celle-ci s'occupe d'appliquer le meme sel et de hasher le mot de passe de l'utilisateur pour le comparer au hash stocker dans la base de données.
 
+### Force des mots de passe 
+Il ne sert à rien de protéger les mots de passe stockés dans la base de données s'ils sont facilement brute forcable. Afin de se prémunir contre ce risque, nous avons décidé de forcer nos utilisateurs à choisir des mots de passes complexes. Sur notre site, les mots de passe doivent posséder les caractéristiques suivantes pour être valide:
+
+Au moins 12 caractères alphanumériques + au moins un caractère spécial. 
+
+Pour vérifier les mots de passes des utilisateurs, nous avons utilisé la regex suivante: 
+
+
+```php
+if (preg_match("/[^(?=\S{12,})(?=\S*[\W])(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])$]/",$`password))
+{ 
+  //change le mot de passe
+  ...
+}
+else
+{
+  echo("Votre mot de passe n'a pas la compléxité requise. Veuillez en resaisir un autre qui respecte les règles suivantes: \n
+        12 caractères \n
+        Au moins un caractère minuscule \n
+        Au moins un caractère majuscule \n
+        Au moins un chiffre \n
+        Au moins un caractère spécial");
+}
+```
+
+Ci dessous se trouve l'explication de notre regex:
+`^` définit le début du mot de passe
+`(?=\S{12,})` définit que la taille du mot de passe doit être de 12 caractères au minimum
+`(?=\S*[\W])` définit que le mot de passe doit comporter au moins un caractère spécial
+`(?=\S*[a-z])` définit le mot de passe doit comporter au moins un caractère en minuscule
+`(?=\S*[A-Z])` définit le mot de passe doit comporter au moins un caractère en majuscule
+`(?=\S*[\d])` définit le mot de passe doit comporter au moins un chiffre
+`$` définit la fin du mot de passe
+
 ### Protection des entrées
 Une des attaques les plus communes sur les sites web est le cross site Scripting. Avec cette attaque, un attaquant peut par l’intermédiaire d’un site web faire exécuter du code (javascript par exemple) à certains clients. Il pourrait demander à un utilisateur de saisir ses identifiants et envoyer ces infos sur un site externe lui appartenant. Afin de ce protéger de ça nous avons échapper tous les caractères spéciaux comme ` »`. Ainsi, un utilisateur ciblé par une attaque de type XSS verra simplement l’exploit sous forme de texte au lieu que celui-ci soit exécuté. Pour protéger les entrées des utilisateurs, nous avons utilisé la fonction `filter_var()` de PHP avec l’option `FILTER_SANITIZE_STRING`.
 
