@@ -146,7 +146,7 @@ Pour vérifier les mots de passes des utilisateurs, nous avons utilisé la regex
 
 
 ```php
-if (preg_match("/[^(?=\S{12,})(?=\S*[\W])(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])$]/",$`password))
+if (preg_match("/[^(?=\S{12,})(?=\S*[\W])(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])$]/",$password))
 { 
   //change le mot de passe
   ...
