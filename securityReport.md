@@ -234,10 +234,10 @@ Puis sur la page PHP qui s'occupe de traiter la demande, nous vérifions que le 
 
 ```php
 //pour les requêtes GET
-if( $_SESSION ['token '] === $_GET ['csrf_token ']) { }
+if( $_SESSION ['token'] === $_GET ['token']) { }
 
 //pour les requêtes POST
-if( $_SESSION ['token '] === $_POST ['csrf_token ']) { }
+if( $_SESSION ['token'] === $_POST ['token']) { }
 
 ```
 
