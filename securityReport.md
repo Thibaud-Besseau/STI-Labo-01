@@ -151,6 +151,20 @@ Pour s'assurer d'avoir toujours le meme comportement lors des comparaisons, nous
 
 `===` à la place de `==` ou `!==` à la place de `!=`. Pour les comparaisons de strings, nous avons choisis d'utiliser `strcmp()` ou `password_verify()` lorsqu'il s'agit de comparer des hashs de mots de passes
 
+### Expiration des sessions 
+Afin d'éviter des sessions qui sont valides encore des années après leurs créations et que de potentiels attaquant est le temps de brute forcer les identifiants de sessions, nous avons décidé de limiter la durée de validité des sessions à 30min. De plus, pour éviter les attaques de type [sessions fixation](https://www.owasp.org/index.php/Session_fixation), nous avons décidé de changer les identifiants de sessions à chaque changement de page via la fonction ci-dessous:
+
+```
+function isLoginSessionExpired() {
+  if (time() - $_SESSION['CREATED'] > 1800) 
+  {
+      // session started more than 30 minutes ago
+      session_regenerate_id(true);    // change session ID for the current session and invalidate old session ID
+      $_SESSION['CREATED'] = time();  // update creation time
+  }
+}
+```
+
 
 
 ## Conclusion
