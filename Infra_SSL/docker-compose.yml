@@ -1,0 +1,59 @@
+version: '2'
+
+services:
+    db:
+        image: mysql
+        ports:
+            - 33060:3306
+        volumes:
+            - "./.data/db:/var/lib/mysql"
+        environment:
+            MYSQL_ROOT_PASSWORD: yOFbxCIsSK3b0P75
+    php:
+        build: 
+            context: php7-fpm
+            args:
+               TIMEZONE: Europe/Paris
+        ports:
+            - 9000:9000
+        links:
+            - db:mysqldb
+        volumes:
+            - ./festineuch:/var/www/symfony
+            - ./festineuch/var/log:/var/www/symfony/app/logs
+    nginx:
+        build: nginx
+        links:
+            - php
+        volumes_from:
+            - php
+        volumes:
+            - ./logs/nginx/:/var/log/nginx
+        environment:
+            VIRTUAL_HOST: "put your url here"
+            LETSENCRYPT_HOST: "put your url here"
+            LETSENCRYPT_EMAIL: "put a domain email here"
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        ports:
+            - "8081:80"
+        links:
+            - db
+    nginx-proxy:
+        image: jwilder/nginx-proxy
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - "./nginx/vhost.d:/etc/nginx/vhost.d"
+            - "./nginx/html:/usr/share/nginx/html"
+            - "./nginx/certs:/etc/nginx/certs"
+            - "/var/run/docker.sock:/tmp/docker.sock:ro"
+
+    letsencrypt-nginx-proxy-companion:
+        image: jrcs/letsencrypt-nginx-proxy-companion
+        volumes:
+            - "/var/run/docker.sock:/var/run/docker.sock:ro"
+        volumes_from:
+            - "nginx-proxy"
+
