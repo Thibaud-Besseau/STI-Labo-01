@@ -268,7 +268,7 @@ A notre connaissance, il reste les failles suivantes
 | Brute Force du login             | Il est possible de brute forcer la page de login car il n'y a pas de captcha ou de banissement d'IP |
 | Version de PHP obsolète          | Depuis fin 2018, la version de PHP n'est plus en support EOL et donc elle ne reçoit plus de patch de sécurité                  |
 | Version du serveur               | Le serveur ubuntu hebergeant notre site est basé sur la version 14 dont le support étendue prendra fin à la mi avril. Après cette date, il n'y aura plus de patch de sécurité. Il faut donc plannifier une migration.                    |
-| Trafic non chiffré               | Afin de chiffrer notre trafic, il faudrait mettre en place un certificat SSL. Il est possible d'en générer [un gratuitement] (https://letsencrypt.org/). Nous avons mis en annexe un fichier docker compose qui se charge d'aller générer le certificat automatiquement  |
+| Trafic non chiffré               | Afin de chiffrer notre trafic, il faudrait mettre en place un certificat SSL. Il est possible d'en générer [un gratuitement] (https://letsencrypt.org/). Nous avons mis en annexe un fichier docker compose qui se charge d'aller générer le certificat automatiquement (un nom de domaine et un email rattaché à ce nom de domaine sont necessaire |
 
 
 
