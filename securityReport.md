@@ -172,7 +172,7 @@ function isLoginSessionExpired() {
         }
 
         //regenerate the session id all the 30 minutes
-        if(time() - $_SESSION['CREATED']>10)
+        if(time() - $_SESSION['CREATED']>1800)
         {
             // session started more than 30 minutes ago
             session_regenerate_id(true); // change session ID for the current session and invalidate old session ID
