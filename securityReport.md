@@ -215,6 +215,31 @@ function isLoginSessionExpired() {
 }
 ```
 
+### Protection contre les attaques CSRF
+Les attaques de type Cross site Request forgery consite à faire éxécuté à une victime des actions à son insu (comme donner les privilèges administrateur au compte de l'attaquant ). Afin de se prémunir contre ce genre d'attaque, il est essentiel de s'assurer que quand un utilisateur va effectuer des modifications critiques (suppression de compte ou octroit de privilèges) se soit bien lui qui est initié cette action. Pour cela, il suffit de rajouter dans chaque requete `GET` ou `POST` un token unique appartenant à l'utilisateur.
+Ainsi si un attaquant effectue une attaque CSRF sur notre admin et essaye d'envoyer le formulaire pour modifier les droits de son compte sans que l'admin ne soit au courant, le formulaire ne sera pas acceptée par le site web car le token ne sera pas celui de l'admin.
+
+Nous regenerons les tokens toutes les 10 minutes pour des raisons de sécurité, nous changons les tokens des utilisateurs. Les tokens ne sont pas générés via la fonction `uniqid()` car cette fonction est prédictible car elle se base sur le temps. A la place de cette fonction, nous préférons créer notre token avec la fonction `mcrypt_create_iv()` qui crée un vecteur d'initialisation vraiement aléatoire. Une fois le token crée, nous le stokons dans une variable de session:
+
+```php
+$_SESSION["token"] = bin2hex(mcrypt_create_iv(32, MCRYPT_DEV_URANDOM));
+```
+
+Pour chaque formulaire ou action, nous insérons le token dans l'URL pour les requêtes GET ou dans un champ caché pour les requêtes POST:        
+`<input type="hidden" name="token" id="token" value="<?php echo $token; ?>" />`
+
+Puis sur la page PHP qui s'occupe de traiter la demande, nous vérifions que le token reçu est bien celui de l'utilisateur connecté:
+
+```php
+//pour les requêtes GET
+if( $_SESSION ['token '] === $_GET ['csrf_token ']) { }
+
+//pour les requêtes POST
+if( $_SESSION ['token '] === $_POST ['csrf_token ']) { }
+
+```
+
+Si le site est accessible via le protocole HTTP, il est indispensable de changer le token régulièrement car il suffit à un attaquant de capturer le trafic entre la victime et le serveur web pour avoir le token. C'est pour cela qu'il est recommendé d'utiliser le protocle HTTPS pour chiffrer le trafic entre l'utilisateur et le site web.
 
 
 ## Conclusion
