@@ -1,8 +1,12 @@
 <?php
 require_once("../config/db.php");
+require_once("../config/session.php");
+
 $db = new MyDB();
 session_start();
 
+$mySession = new MySession();
+$mySession->isLoginSessionExpired();
 
 if (!isset($_SESSION['email'])) {
     header('Location: ../index.php');

@@ -1,10 +1,16 @@
 <?php
 require_once("../config/db.php");
+require_once("../config/session.php");
+
 session_start();
+
+//check if session has expired
+$mySession = new MySession();
+$mySession->isLoginSessionExpired();
 
 $db = new MyDB();
 
-if (!isset($_COOKIE["login"])) {
+if (!isset($_SESSION["email"])) {
     header('Location: ../index.php');
 } else {
     $email = $_SESSION['email'];

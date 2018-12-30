@@ -1,7 +1,17 @@
 <?php
 
 require_once("../config/db.php");
+require_once("../config/session.php");
+
 session_start();
+
+//check if session has expired
+$mySession = new MySession();
+$mySession->isLoginSessionExpired();
+
+if (!isset($_SESSION['email'])) {
+    header('Location: ../index.php');
+}
 
 
 /**
@@ -12,6 +22,8 @@ session_start();
  */
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
+    $db = new MyDB();
+
     // username and password sent from form
     $post_Sender = filter_var($_POST['Sender'], FILTER_SANITIZE_STRING);
     $post_Recipient = filter_var($_POST['Recipient'], FILTER_SANITIZE_STRING);
@@ -43,10 +55,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
+
 }
 
 
-$db = new MyDB();
 
 $db->sendEmail($post_Sender, $post_Recipient, $post_Subject, $post_Message);
 header("location: ./mailbox.php");
