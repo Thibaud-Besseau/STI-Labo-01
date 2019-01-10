@@ -72,6 +72,8 @@ Pour résumer les points précédents, notre système comprend les parties suiva
 - Infrastructure
   - Pages web
   - Base de données
+  
+<div style="page-break-after: always;"></div>
 
 ### Périmètre de sécurisation
 
@@ -145,6 +147,8 @@ Il est fortement recommandé de chiffrer les mots de passe et les enregistrer ch
 | Motivation          | Gloire (script kiddies, hacker), argent (cybercriminels), fierté (utilisateurs malins) |
 | Cible               | Données utilisateurs (mots de passe, rôles, messages)        |
 | Contrôles           | Protéger la session courante contre des vols de sessions externes.                            Protéger un utilisateur en indiquant un critère de complexité pour le mot de passe. Limiter certaines actions de l'utilisateur dans sa session. |
+
+<div style="page-break-after: always;"></div>
 
 #### 1. Mot de passe faible
 
@@ -340,6 +344,8 @@ A notre connaissance, il reste les failles suivantes
 
 
 Le fichier DockerCompose devrait servir de base à tous déploiements de site web. Il propose met en place un NGNIX Proxy qui centralise toutes les requêtes des clients. Ce proxy est celui qui possède le certificat SSL. Ce certificat est mis à jour par un autre container qui s'occupe de vérifier périodiquement si le certificat est à jour et si besoin il le met à jour. Les autres containeurs sont plutôt basiques : un serveur NGNIX qui délivre le contenu au proxy et un containeur PHP. Pour finir il y a un containeur MYSQL qui ne peut être accédé que par le containeur PHP pour des raisons de sécurités.
+<div style="page-break-after: always;"></div>
+
 
 ## Conclusion
 Comme nous l'avons expliqué tout au long de ce rapport, sécuriser un site web PHP demande de prendre en comptes beaucoup de scénarios d'attaque afin d'être sûr d'avoir mis en place toutes les sécurités nécessaires. Il serait donc intéressant que tous développeurs fassent cette même analyse lorsqu'ils conçoivent le design de son site et à chaque changement ou ajout de fonctionnalités car la sécurité n'est pas un produit sur lequel on investit plusieurs heures de travail au début d’un projet mais un processus qui doit se poursuivre sur toutes la vie d'un site web.
