@@ -14,14 +14,14 @@ After you need to execute theses commands on the container to install the mcrypt
 
 ```bash
 docker exec -it sti_project /bin/bash
-agt-get update
+apt-get update
 apt-get install php5-mcrypt
 ln -s /etc/php5/conf.d/mcrypt.ini /etc/php5/mods-available/mcrypt.ini
 php5enmod mcrypt
 service php5-fpm restart
 sudo service nginx restart
-
-chmod 777 /usr/share/ngnix/database/*
+cd /usr/share/nginx
+chmod 777 -R databases/
 ```
 
 After that you can connect to `localhost:8080`.
