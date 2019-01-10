@@ -43,6 +43,9 @@ Notre site web se trouve dans le répertoire "html" qui contient la page index e
 | send.php         | Fichier permettant l'envoi du message de l'utilisateur       |
 | users.php        | Page affichant la liste des utilisateurs pour l'administrateur |
 
+<div style="page-break-after: always;"></div>
+
+
 ### Partie Base de données
 
 
@@ -77,6 +80,10 @@ Nous avons regroupé les sources de menaces en plusieurs catégories :
   - Probabilité : Très faible
   - Motivation : Récolter des données pour de l'analyse/espionnage
   - Cible : L'entierté de l'application web
+  
+<div style="page-break-after: always;"></div>
+
+
 
 ## Scénarios d'attaques
 
@@ -98,7 +105,6 @@ Chaque scénario comportera une description, un niveau d'importance, une source,
 #### 1. Injection SQL 
 
 L'injection SQL est une attaque classique et très basique. Il est l'attaque la plus utilisée selon le site de l'OWASP. 
-
 Notre site web est touché par ce genre d'attaque à cause des différences champs textes que l'utilisateur peut remplir.
 
 #### 2. Mots de passe en clair dans la base de données
@@ -121,8 +127,10 @@ Il est fortement recommandé de chiffrer les mots de passe et les enregitrer chi
 #### 1. Mot de passe faible
 
 Le mot de passe doit toujours répondre à un certain critère comme sa complexité sur le nombre de caractères, l'utilisation de majuscule, caractères spéciaux ou chiffres.
-
 Tous les utilisateurs devraient respecter ces critères mais surtout l'administrateur car il est le point sensible de toute l'application. L'administrateur peut tout faire sur le site web, le perdre serait catastrophique.
+
+<div style="page-break-after: always;"></div>
+
 
 ## Contre-mesures
 
@@ -141,9 +149,7 @@ La fonction `password_hash()` étant une fonction mathématique à sens unique, 
 Il ne sert à rien de protéger les mots de passe stockés dans la base de données s'ils sont facilement brute forcable. Afin de se prémunir contre ce risque, nous avons décidé de forcer nos utilisateurs à choisir des mots de passes complexes. Sur notre site, les mots de passe doivent posséder les caractéristiques suivantes pour être valide:
 
 Au moins 12 caractères alphanumériques + au moins un caractère spécial. 
-
 Pour vérifier les mots de passes des utilisateurs, nous avons utilisé la regex suivante: 
-
 
 ```php
 if (preg_match("/[^(?=\S{12,})(?=\S*[\W])(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])$]/",$password))
@@ -153,7 +159,8 @@ if (preg_match("/[^(?=\S{12,})(?=\S*[\W])(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])$]/"
 }
 else
 {
-  echo("Votre mot de passe n'a pas la compléxité requise. Veuillez en resaisir un autre qui respecte les règles suivantes: \n
+  echo("Votre mot de passe n'a pas la compléxité requise. 
+        Veuillez en resaisir un autre qui respecte les règles suivantes: \n
         12 caractères \n
         Au moins un caractère minuscule \n
         Au moins un caractère majuscule \n
@@ -161,6 +168,8 @@ else
         Au moins un caractère spécial");
 }
 ```
+<div style="page-break-after: always;"></div>
+
 
 Ci dessous se trouve l'explication de notre regex:
 - `^` définit le début du mot de passe
@@ -178,12 +187,13 @@ Une des attaques les plus communes sur les sites web est le cross site Scripting
 
 Les comparaisons (non strictes) en php sont connues pour pouvoir ammener à des résultats qui ne sont pas ceux attendus. (Voir le tableau ci-joint: 
 
-![alt text](/images/PHP_Type_Jungeling.jpg "Types Juggling (Source: https://www.owasp.org/images/6/6b/PHPMagicTricks-TypeJuggling.pdf)")
-
+![alt text](./images/PHP_Type_Jungeling.jpg "Types Juggling (Source: https://www.owasp.org/images/6/6b/PHPMagicTricks-TypeJuggling.pdf)")
 
 Pour s'assurer d'avoir toujours le meme comportement lors des comparaisons, nous avons décidé de forcer les comparaisons strictes comme 
-
 `===` à la place de `==` ou `!==` à la place de `!=`. Pour les comparaisons de strings, nous avons choisis d'utiliser `strcmp()` ou `password_verify()` lorsqu'il s'agit de comparer des hashs de mots de passes
+
+<div style="page-break-after: always;"></div>
+
 
 ### Expiration des sessions 
 Afin d'éviter des sessions qui sont valides encore des années après leurs créations et que de potentiels attaquant est le temps de brute forcer les identifiants de sessions, nous avons décidé de limiter la durée de validité des sessions à 30min. De plus, pour éviter les attaques de type [sessions fixation](https://www.owasp.org/index.php/Session_fixation), nous avons décidé de changer les identifiants de sessions à chaque changement de page via la fonction ci-dessous:
@@ -209,7 +219,7 @@ function isLoginSessionExpired() {
         if(time() - $_SESSION['CREATED']>1800)
         {
             // session started more than 30 minutes ago
-            session_regenerate_id(true); // change session ID for the current session and invalidate old session ID
+            session_regenerate_id(true); // change session ID and invalidate old session ID
             $_SESSION['CREATED'] = time();
         }
 }
